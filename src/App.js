@@ -4,7 +4,7 @@ import ComparisonCharts from './components/ComparisonCharts';
 import ErrorBoundary from './components/ErrorBoundary';
 import ReactLoading from 'react-loading';
 
-import { getUserData, getUserRepos, getUserLanguages } from './services/api/githubApi';
+import { getUserData, getUserRepos, getUserLanguages, getUserPRs } from './services/api/githubApi';
 
 const App = () => {
   const [comparisonData, setComparisonData] = useState(null);
@@ -19,15 +19,17 @@ const App = () => {
       const profileData = await getUserData(profileUsername);
       const profileReposData = await getUserRepos(profileUsername);
       const profileLanguages = await getUserLanguages(profileUsername);
+      const profilePRs = await getUserPRs(profileUsername);
 
       const compareDataPromises = compareUsernames.map(async (username) => {
         const userData = await getUserData(username);
         const reposData = await getUserRepos(username);
         const languagesData = await getUserLanguages(username);
+        const prsData = await getUserPRs(username);
         return {
           username: userData.login,
           stars: reposData.totalStars,
-          prs: 25,  
+          prs: prsData,  
           repos: reposData.reposCount,
           languages: languagesData,
         };
@@ -39,7 +41,7 @@ const App = () => {
         profileData: {
           username: profileData.login,
           stars: profileReposData.totalStars,
-          prs: 30,  
+          prs: profilePRs,  
           repos: profileReposData.reposCount,
           languages: profileLanguages,
         },

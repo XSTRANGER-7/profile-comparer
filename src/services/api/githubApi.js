@@ -79,5 +79,36 @@ const fetchLanguages = async (username) => {
   export const getUserLanguages = async (username) => {
     const languages = await fetchLanguages(username);
     return languages;
+  }; 
+  
+
+const fetchAllPRs = async (username) => {
+    let page = 1;
+    let allPRs = [];
+    let fetchMore = true;
+  
+    while (fetchMore) {
+      try {
+        const response = await axios.get(`https://api.github.com/search/issues?q=author:${username}+type:pr&per_page=100&page=${page}`, {
+          headers: {
+            Authorization: `token ${token}`
+          }
+        });
+        const prs = response.data.items;
+        allPRs = [...allPRs, ...prs];
+        page++;
+        fetchMore = prs.length === 100;
+      } catch (error) {
+        console.error('Failed to fetch user pull requests:', error);
+        throw error;
+      }
+    }
+  
+    return allPRs;
+  };
+  
+  export const getUserPRs = async (username) => {
+    const prs = await fetchAllPRs(username);
+    return prs.length;
   };
   
