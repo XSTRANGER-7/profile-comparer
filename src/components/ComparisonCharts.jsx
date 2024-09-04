@@ -29,8 +29,8 @@ const ComparisonCharts = ({ comparisonData }) => {
     Legend
   );
 
-  useEffect(() => {
-    // Cleanup: Destroy the chart instance before creating a new one
+  useEffect(() => { 
+    
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();

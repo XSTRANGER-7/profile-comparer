@@ -23,13 +23,13 @@ const App = () => {
         profileData: {
           username: profileData.login,
           stars: profileReposData.totalStars,
-          prs: 30, // You can add logic to fetch real PR data
+          prs: 30, 
           repos: profileReposData.reposCount,
         },
         compareData: {
           username: compareData.login,
           stars: compareReposData.totalStars,
-          prs: 25, // You can add logic to fetch real PR data
+          prs: 25, // Replace with real PR data if available
           repos: compareReposData.reposCount,
         },
       });
