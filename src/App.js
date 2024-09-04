@@ -8,30 +8,35 @@ import { getUserData, getUserRepos } from './services/api/githubApi';
 const App = () => {
   const [comparisonData, setComparisonData] = useState(null);
 
-  const handleCompare = async (profileUrl, compareUrl) => {
+  const handleCompare = async (profileUrl, compareUrls) => {
     try {
       const profileUsername = profileUrl.split('/').pop();
-      const compareUsername = compareUrl.split('/').pop();
+      const compareUsernames = compareUrls.map(url => url.split('/').pop());
 
       const profileData = await getUserData(profileUsername);
-      const compareData = await getUserData(compareUsername);
-
       const profileReposData = await getUserRepos(profileUsername);
-      const compareReposData = await getUserRepos(compareUsername);
+
+      const compareDataPromises = compareUsernames.map(async (username) => {
+        const userData = await getUserData(username);
+        const reposData = await getUserRepos(username);
+        return {
+          username: userData.login,
+          stars: reposData.totalStars,
+          prs: 25,  
+          repos: reposData.reposCount,
+        };
+      });
+
+      const compareData = await Promise.all(compareDataPromises);
 
       setComparisonData({
         profileData: {
           username: profileData.login,
           stars: profileReposData.totalStars,
-          prs: 30, 
+          prs: 30,  
           repos: profileReposData.reposCount,
         },
-        compareData: {
-          username: compareData.login,
-          stars: compareReposData.totalStars,
-          prs: 25, // Replace with real PR data if available
-          repos: compareReposData.reposCount,
-        },
+        compareData,
       });
     } catch (error) {
       console.error('Error comparing profiles:', error);

@@ -54,3 +54,30 @@ export const getUserRepos = async (username) => {
     reposCount: repos.length,
   };
 };
+const fetchLanguages = async (username) => {
+    const repos = await fetchAllRepos(username);
+    const languages = {};
+  
+    for (const repo of repos) {
+      try {
+        const response = await axios.get(`https://api.github.com/repos/${username}/${repo.name}/languages`, {
+          headers: {
+            Authorization: `token ${token}`
+          }
+        });
+        for (const [lang, lines] of Object.entries(response.data)) {
+          languages[lang] = (languages[lang] || 0) + lines;
+        }
+      } catch (error) {
+        console.error('Failed to fetch repository languages:', error);
+      }
+    }
+  
+    return languages;
+  };
+  
+  export const getUserLanguages = async (username) => {
+    const languages = await fetchLanguages(username);
+    return languages;
+  };
+  
