@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import ReactLoading from 'react-loading';
 
 ChartJS.register(
   CategoryScale,
@@ -41,8 +42,7 @@ const ComparisonCharts = ({ comparisonData }) => {
       })),
     ],
   };
-
-  // Prepare table data
+ 
   const tableRows = compareData.flatMap((data) => {
     const languages = data.languages || {};
     return Object.entries(languages).map(([lang, lines]) => (
