@@ -1,10 +1,12 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# `Steps`
 
-## Available Scripts
+### Create .env file in root directory
+## Copy the github personal access token and paste it in .env file with environmental variable named REACT_APP_GITHUB_TOKEN
+ 
 
-In the project directory, you can run:
+NOW, you can run:
 
 ### `npm start`
 
